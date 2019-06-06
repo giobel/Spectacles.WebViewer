@@ -37,7 +37,7 @@ namespace Spectacles.RevitExporter
   /// <summary>
   /// three.js object class, successor of SpectaclesScene.
   /// The structure and properties defined here were
-  /// reverse engineered ftom JSON files exported 
+  /// reverse engineered from JSON files exported 
   /// by the three.js and Spectacles editors.
   /// </summary>
   [DataContract]

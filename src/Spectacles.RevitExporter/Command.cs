@@ -100,7 +100,7 @@ namespace Spectacles.RevitExporter
       // of face tessellation. Meshes of the faces 
       // will still be received by the context.
 
-      exporter.IncludeFaces = false;
+      exporter.IncludeGeometricObjects = false;
 
       exporter.ShouldStopOnError = false;
 
@@ -136,93 +136,101 @@ namespace Spectacles.RevitExporter
       foreach( var fi in collector )
       {
 
-        string category = fi.Category.Name;
-
-        if( category != "Title Blocks" && category != "Generic Annotations" && category != "Detail Items" && category != "Cameras" )
-        {
-          IList<Parameter> parameters = fi.GetOrderedParameters();
-          List<string> parameterNames = new List<string>();
-
-          foreach( Parameter p in parameters )
-          {
-            string pName = p.Definition.Name;
-            string tempVal = "";
-
-            if( StorageType.String == p.StorageType )
-            {
-              tempVal = p.AsString();
-            }
-            else
-            {
-              tempVal = p.AsValueString();
-            }
-            if( !string.IsNullOrEmpty( tempVal ) )
-            {
-              if( _parameterDictionary.ContainsKey( category ) )
-              {
-                if( !_parameterDictionary[category].Contains( pName ) )
+                
+        //string category = fi.Category.Name;
+        if (fi.Category!=null && fi.Category.Name != null)
                 {
-                  _parameterDictionary[category].Add( pName );
-                }
-              }
-              else
-              {
-                parameterNames.Add( pName );
-              }
-            }
-          }
-          if( parameterNames.Count > 0 )
-          {
-            _parameterDictionary.Add( category, parameterNames );
-          }
-          if( includeType )
-          {
-            ElementId idType = fi.GetTypeId();
+                    string category = fi.Category.Name;
 
-            if( ElementId.InvalidElementId != idType )
-            {
-              Element typ = doc.GetElement( idType );
-              parameters = typ.GetOrderedParameters();
-              List<string> parameterTypes = new List<string>();
-              foreach( Parameter p in parameters )
-              {
-                string pName = "Type " + p.Definition.Name;
-                string tempVal = "";
-                if( !_parameterDictionary[category].Contains( pName ) )
-                {
-                  if( StorageType.String == p.StorageType )
-                  {
-                    tempVal = p.AsString();
-                  }
-                  else
-                  {
-                    tempVal = p.AsValueString();
-                  }
-
-                  if( !string.IsNullOrEmpty( tempVal ) )
-                  {
-                    if( _parameterDictionary.ContainsKey( category ) )
+                    if (category != "Title Blocks" && category != "Generic Annotations" && category != "Detail Items" && category != "Cameras")
                     {
-                      if( !_parameterDictionary[category].Contains( pName ) )
-                      {
-                        _parameterDictionary[category].Add( pName );
-                      }
-                    }
-                    else
-                    {
-                      parameterTypes.Add( pName );
-                    }
-                  }
-                }
-              }
-              if( parameterTypes.Count > 0 )
-              {
-                _parameterDictionary[category].AddRange( parameterTypes );
-              }
-            }
 
-          }
-        }
+
+                        IList<Parameter> parameters = fi.GetOrderedParameters();
+                        List<string> parameterNames = new List<string>();
+
+                        foreach (Parameter p in parameters)
+                        {
+                            string pName = p.Definition.Name;
+                            string tempVal = "";
+
+                            if (StorageType.String == p.StorageType)
+                            {
+                                tempVal = p.AsString();
+                            }
+                            else
+                            {
+                                tempVal = p.AsValueString();
+                            }
+                            if (!string.IsNullOrEmpty(tempVal))
+                            {
+                                if (_parameterDictionary.ContainsKey(category))
+                                {
+                                    if (!_parameterDictionary[category].Contains(pName))
+                                    {
+                                        _parameterDictionary[category].Add(pName);
+                                    }
+                                }
+                                else
+                                {
+                                    parameterNames.Add(pName);
+                                }
+                            }
+                        }
+                        if (parameterNames.Count > 0)
+                        {
+                            _parameterDictionary.Add(category, parameterNames);
+                        }
+                        if (includeType)
+                        {
+                            ElementId idType = fi.GetTypeId();
+
+                            if (ElementId.InvalidElementId != idType)
+                            {
+                                Element typ = doc.GetElement(idType);
+                                parameters = typ.GetOrderedParameters();
+                                List<string> parameterTypes = new List<string>();
+                                foreach (Parameter p in parameters)
+                                {
+                                    string pName = "Type " + p.Definition.Name;
+                                    string tempVal = "";
+                                    if (!_parameterDictionary[category].Contains(pName))
+                                    {
+                                        if (StorageType.String == p.StorageType)
+                                        {
+                                            tempVal = p.AsString();
+                                        }
+                                        else
+                                        {
+                                            tempVal = p.AsValueString();
+                                        }
+
+                                        if (!string.IsNullOrEmpty(tempVal))
+                                        {
+                                            if (_parameterDictionary.ContainsKey(category))
+                                            {
+                                                if (!_parameterDictionary[category].Contains(pName))
+                                                {
+                                                    _parameterDictionary[category].Add(pName);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                parameterTypes.Add(pName);
+                                            }
+                                        }
+                                    }
+                                }
+                                if (parameterTypes.Count > 0)
+                                {
+                                    _parameterDictionary[category].AddRange(parameterTypes);
+                                }
+                            }
+
+                        }
+                    }
+                }
+        
       }
 
       // Create filter UI.
@@ -406,7 +414,7 @@ namespace Spectacles.RevitExporter
             cameraPositions = new List<string>();
             cameraTargets = new List<string>();
 
-            IEnumerable<Element> views = null;
+            //IEnumerable<Element> views = null;
             FilteredElementCollector viewCol = new FilteredElementCollector(RvtDoc);
 
             viewCol.OfClass(typeof(View3D));

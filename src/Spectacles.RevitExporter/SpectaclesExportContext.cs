@@ -33,8 +33,8 @@ using System.Linq;
 using System.Diagnostics;
 using System.IO;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.Utility;
 using Newtonsoft.Json;
+using Autodesk.Revit.DB.Visual;
 #endregion // Namespaces
 
 namespace Spectacles.RevitExporter
@@ -661,13 +661,14 @@ namespace Spectacles.RevitExporter
             return false;
         }
 
+        /*
         public void OnDaylightPortal(DaylightPortalNode node)
         {
             Debug.WriteLine("OnDaylightPortal: " + node.NodeName);
             Asset asset = node.GetAsset();
             Debug.WriteLine("OnDaylightPortal: Asset:"
               + ((asset != null) ? asset.Name : "Null"));
-        }
+        }*/
 
         public void OnRPC(RPCNode node)
         {
