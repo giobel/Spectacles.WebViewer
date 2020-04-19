@@ -172,3 +172,7 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+/src/.vs/Spectacles.RevitExporter/v15/Server/sqlite3/storage.ide-wal
+/src/.vs/Spectacles.RevitExporter/v15/Server/sqlite3/storage.ide-shm
+/src/.vs/Spectacles.RevitExporter/v15/Server/sqlite3/storage.ide
+/src/.vs/Spectacles.RevitExporter/v15/Server/sqlite3/db.lock
